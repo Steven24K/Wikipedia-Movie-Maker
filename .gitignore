@@ -2,3 +2,4 @@ config.py
 voice-overs
 videos
 giffs
+__pycache__

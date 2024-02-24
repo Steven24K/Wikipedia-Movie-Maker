@@ -10,13 +10,12 @@ def getWikiInfo(name, paragraphs_amount = 5, language = 'en'):
     print('info from :: ' + url)
     soup.table.extract()
     soup.h1.extract()
+    # print(soup.contents)
     soup.find(id='siteSub').extract()
     soup.find(id='contentSub').extract()
-    soup.find(id='jump-to-nav').extract()
     for i in soup.find_all('a', {'class': 'mw-jump-link'}): 
         i.extract()
         
-    soup.find('div', id='toc').extract()
     
     paragraphs = soup.find_all('p')
     
@@ -36,6 +35,6 @@ def getWikiInfo(name, paragraphs_amount = 5, language = 'en'):
 def getGifImages(key, name, limit = 10, offset = 0, rating = 'g', lang = 'en'):
     url = 'https://api.giphy.com/v1/gifs/search?api_key={}&q={}&limit={}&offset={}&rating={}&lang={}'.format(key,name, limit, offset, rating, lang)
     response = requests.get(url)
-
+    print('Get gifs from {}'.format(url))
     return list(map(lambda gif: gif['images']['original']['url'], json.loads(response.text)['data']))
 

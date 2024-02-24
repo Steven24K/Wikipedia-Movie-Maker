@@ -50,19 +50,19 @@ def main():
     try: 
         os.mkdir(snd_dir)
     except: 
-        print('Folder allready exists')
+        print('Sound folder allready exists')
     try:
         os.mkdirs(img_dir)
     except: 
-        print('Folder allready exists')
+        print('Image folder allready exists')
     try:
         os.makedirs(img_dir + '/{}'.format(subject_without_space))
     except: 
-        print('Folder allready exists')
+        print('Subject image {} folder allready exists'.format(subject_without_space))
     try:
         os.mkdir(out)
     except: 
-        print('Folder allready exists')
+        print('Video output folder allready exists')
 
     text = getInfo.getWikiInfo(subject, int(paragraphs), language)
     print(text)
@@ -77,7 +77,7 @@ def main():
     audioClip = AudioFileClip(soundFile)
 
     print('Get images')
-    gifs = getInfo.getGifImages(config.GIPHY_API_KEY, subject, limit=math.ceil(audioClip.duration/interval))
+    gifs = getInfo.getGifImages(config.GIPHY_API_KEY, subject, limit=math.ceil(audioClip.duration/interval), offset=0, rating='g', lang=language)
 
     cnt = 0
     gif_paths = []
@@ -103,6 +103,7 @@ def main():
 
     final_clip = concatenate_videoclips(list(clips), method='compose')
     final_clip = final_clip.set_audio(audioClip)
+    final_clip = final_clip.set_position(('center', 'top'))
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip([background, final_clip], use_bgclip=True, bg_color='white')
